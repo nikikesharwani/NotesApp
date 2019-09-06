@@ -1,0 +1,48 @@
+<div class="container-fluid header pt-3">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="col-lg-4 col-5">
+        <a href="#" style="width: 12%; border: none" data-toggle="sidebar-colapse"
+          class="collapse-icon list-group-item list-group-item-action align-items-center">
+          <div>
+            <img src="../../assets/images/menu.jpg" width="20px" style="margin-right: 10px">
+          </div>
+        </a>
+        <a class="navbar-brand" href="#">
+          <img src="../../assets/images/note_logo.png" alt="">
+        </a>
+      </div>
+      <div class="col-lg-8 col-7 text-right">
+        <ul class="navbar-nav ml-auto  mt-lg-2">
+          <li class="nav-item active" *ngIf="!toggleSearch">
+            <a class="nav-link" href="JavaScript:void(0);"><i class="fas fa-plus"></i></a>
+          </li>
+          <li class="nav-item active" *ngIf="!toggleSearch">
+            <a class="nav-link" href="JavaScript:void(0);"><i class="fas fa-edit"></i></a>
+          </li>
+          <li class="nav-item active" *ngIf="!toggleSearch">
+            <a class="nav-link" href="JavaScript:void(0);"><i class="fas fa-save"></i></a>
+          </li>
+          <li class="nav-item" *ngIf="!toggleSearch">
+            <a class="nav-link" href="JavaScript:void(0);"><i class="fa fa-trash"></i></a>
+          </li>
+          <li class="nav-item" *ngIf="!toggleSearch">
+            <a class="nav-link" (click)="toggleSearch = true"><i class="fa fa-search"></i></a>
+          </li>
+          <li>
+            <form class="" role="search" *ngIf="toggleSearch">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search">
+                <div class="input-group-append">
+                  <button type="reset" class="btn btn-light btn-times" (click)="toggleSearch = false">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

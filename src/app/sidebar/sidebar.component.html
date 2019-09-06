@@ -1,0 +1,49 @@
+
+
+ <!-- Bootstrap row -->
+ <div class="row" id="body-row">
+    <!-- Sidebar -->
+    <div id="sidebar-container" class="sidebar-expanded d-md-block"><!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+        <!-- Bootstrap List Group -->
+        <div>
+          <div class="card" *ngFor="let card of cards; let i = index" [ngClass]="{'highlight-card': selectedIndex === i}">
+            <div class="card-body">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-8 col-8 pl-0">
+                    <h5 class="card-title" (click)="selectedIndex = i">Card title</h5>
+                  </div>
+                  <div class="col-lg-4 col-4 text-right pr-0">
+                  <input type="checkbox" style="width: 16px; height: 16px;"> 
+                  </div>
+                </div>
+              </div>
+              <div (click)="selectedIndex = i">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+              </div>      
+            </div>
+          </div>
+        </div>
+    </div><!-- sidebar-container END -->
+
+    <!-- MAIN -->
+    <div class="col pt-3">
+        
+        <h1 class="text-center">
+            
+        </h1>
+        
+        
+        <div class="card">
+            <!-- <h4 class="card-header">Requirements</h4> -->
+            <div class="card-body">
+                <app-note></app-note>
+            </div>
+        </div>
+       
+
+
+    </div><!-- Main Col END -->
+    
+</div><!-- body-row END -->
