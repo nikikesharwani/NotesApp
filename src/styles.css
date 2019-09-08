@@ -44,6 +44,7 @@ body {
     margin: 0em 1em 1em 1em;
     background: #ddd8d8;
     box-shadow: 5px 6px 9px #b9b9b9;
+    min-height: 1000px;
 }
 
 #body-row {
@@ -106,6 +107,45 @@ body {
     box-shadow: none !important;
 }
 
+.red {
+    color: #FF0000;
+}
+
+.errorStyle {
+    border: none !important;
+    color: #FF0000;
+    font-size: 12px;
+}
+
+#addNote {
+    color: #646464 !important;
+    background-color: #ffaf06 !important;
+}
+
+#addNote:focus {
+    box-shadow: none !important;
+}
+
+#emptyNotes {
+    font-size: 24px;
+    color: #646464;
+    position: absolute;
+    top: 30%;
+    left: 5%;
+}
+
+#showNote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+
 @media (min-width:768px) and (max-width:1920px) { 
     .sidebar-collapsed {
         width: 30% !important;
@@ -155,7 +195,11 @@ body {
 
     .header {
         height: 75px;
-}
+    }
+
+    #body-row {
+        top: 75px;
+    }
     
 }
  

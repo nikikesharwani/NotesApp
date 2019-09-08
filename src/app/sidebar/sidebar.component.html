@@ -6,23 +6,26 @@
     <div id="sidebar-container" class="sidebar-expanded d-md-block"><!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
         <!-- Bootstrap List Group -->
         <div>
-          <div class="card" *ngFor="let card of cards; let i = index" [ngClass]="{'highlight-card': selectedIndex === i}">
+          <div class="card" *ngFor="let note of notesList | filterdata: searchText; let i = index; trackBy: trackByFn" [ngClass]="{'highlight-card': selectedIndex === i}">
             <div class="card-body">
               <div class="col-lg-12">
                 <div class="row">
                   <div class="col-lg-8 col-8 pl-0">
-                    <h5 class="card-title" (click)="selectedIndex = i">Card title</h5>
+                    <h5 class="card-title" (click)="onNoteSelect(i, note)" [innerHTML]="note.title | highlighter: searchText"></h5>
                   </div>
                   <div class="col-lg-4 col-4 text-right pr-0">
-                  <input type="checkbox" style="width: 16px; height: 16px;"> 
+                  <input type="checkbox" (click)="onNoteChecked(note)" style="width: 16px; height: 16px;" [(ngModel)]="note.checked"> 
                   </div>
                 </div>
               </div>
-              <div (click)="selectedIndex = i">
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
+              <div (click)="onNoteSelect(i, note)">
+                  <p class="card-text" [innerHTML]="note.desc | highlighter: searchText"></p>
+                  <a href="Javascript: void(0)" class="card-link">{{note.timeStamp }}</a>
               </div>      
             </div>
+          </div>
+          <div id="emptyNotes" *ngIf="notesList.length === 0">
+            <p>No notes found!!!</p>
           </div>
         </div>
     </div><!-- sidebar-container END -->
@@ -38,7 +41,7 @@
         <div class="card">
             <!-- <h4 class="card-header">Requirements</h4> -->
             <div class="card-body">
-                <app-note></app-note>
+                <app-note [selectedNote]="selectedNote"></app-note>
             </div>
         </div>
        
