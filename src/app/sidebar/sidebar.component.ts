@@ -86,6 +86,11 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     function SidebarCollapse () {
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+        if ($('#sidebar-container').hasClass('sidebar-expanded')){
+          $("#emptyNotes p").css('display', 'block');
+        } else {
+          $("#emptyNotes p").css('display', 'none');
+        }
     }
 
     // expand and collapse sidebar on window resize
@@ -105,9 +110,11 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     if (width < 768) {
       $('#sidebar-container').removeClass('sidebar-expanded');
       $('#sidebar-container').addClass('sidebar-collapsed');
+      $("#emptyNotes p").css('display', 'none');
     } else {
       $('#sidebar-container').addClass('sidebar-expanded');
       $('#sidebar-container').removeClass('sidebar-collapsed');
+      $("#emptyNotes p").css('display', 'block');
     }
   }
 

@@ -221,12 +221,16 @@ body {
     }
 
     #showNote {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     #toast-container>div {
         padding: 10px 15px 10px 45px !important;
         width: 15em !important;
+    }
+
+    #emptyNotes p {
+        font-size: 20px;
     }
 
 }
