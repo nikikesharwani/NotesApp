@@ -51,7 +51,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         notes => {
           this.notesList = notes;
           if (this.notesList.length > 0) {
-            this.onNoteSelect(0, this.notesList[0]);
+            this.onNoteSelect(this.notesList.length - 1, this.notesList[this.notesList.length - 1]);
             if (this.firstLoad) {
               const notesArray: Note[] = [];
               this.notesList.forEach((note: Note) => {
