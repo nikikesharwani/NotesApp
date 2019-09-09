@@ -4,7 +4,7 @@ import { AppStore } from '../app.store';
 import { Note } from '../models/note';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class NoteService {
@@ -15,17 +15,19 @@ export class NoteService {
   selectedNote = new EventEmitter<Note>();
   editNote = new Subject<boolean>();
   searchText = new Subject<string>();
+  successToastr = new Subject<string>();
+  errorToastr = new Subject<string>();
 
   // loading notes from App store and sending it to components to subscribe
   constructor(private store: Store<AppStore>) {
     this.loadNotes();
-    this.notes = store.select( store => store.notes);
+    this.notes = store.select( storeData => storeData.notes);
   }
 
   // load notes from localstorage and adding it to App store to manage application state
   loadNotes()  {
     let notes: Note[] = [];
-    if (localStorage.getItem('notes') !== null){
+    if (localStorage.getItem('notes') !== null) {
       notes = JSON.parse(localStorage.getItem('notes'));
     } else {
       localStorage.setItem('notes', JSON.stringify(notes));
@@ -50,12 +52,12 @@ export class NoteService {
     notes.forEach((note: Note) => {
       this.updateLocalStorage(3, note);
       this.store.dispatch({ type: 'DELETE_NOTE', payload: note });
-    });  
+    });
   }
 
   // update localstorage on add, update and delete notes
   updateLocalStorage(action: number, note: Note) {
-    let notes: Note[] = JSON.parse(localStorage.getItem('notes'));
+    const notes: Note[] = JSON.parse(localStorage.getItem('notes'));
     if (action === 1) {
       notes.push(note);
     } else if ( action === 2) {
@@ -64,6 +66,16 @@ export class NoteService {
       notes.splice(notes.findIndex(item => item.id === note.id), 1);
     }
     localStorage.setItem('notes', JSON.stringify(notes));
+  }
+
+  // show success toastr messages
+  showSuccessMessage(message: string) {
+    this.successToastr.next(message);
+  }
+
+  // show error toastr messages
+  showErrorMessage(message: string) {
+    this.errorToastr.next(message);
   }
 
 }

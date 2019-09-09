@@ -23,7 +23,7 @@
 <div *ngIf="!editableNote">
   <div>
     <p id="showNote">{{currentDate | date: 'MMMM d, y, h:mm a'}}</p>
-    <h4>{{selectedNote?.title}}</h4>
-    <p>{{selectedNote?.desc}}</p>
+    <h4 id="noteTitle">{{selectedNote?.title}}</h4>
+    <p id="noteDescription">{{selectedNote?.desc}}</p>
   </div>
 </div>

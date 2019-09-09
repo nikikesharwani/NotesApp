@@ -145,6 +145,10 @@ body {
     cursor: default;
 }
 
+.card-link {
+    pointer-events: none !important;
+    cursor: default !important;
+}
 
 @media (min-width:768px) and (max-width:1920px) { 
     .sidebar-collapsed {
@@ -199,6 +203,10 @@ body {
 
     #body-row {
         top: 75px;
+    }
+
+    #showNote {
+        font-size: 14px;
     }
     
 }

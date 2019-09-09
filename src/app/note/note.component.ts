@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Note } from '../models/note';
 import { NoteService } from '../services/note.service';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class NoteComponent implements OnInit, OnDestroy {
 
-  @Input() 
+  @Input()
   selectedNote: Note;
 
   noteForm: FormGroup;
@@ -27,25 +27,27 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   // initializing variables and subscribing to add note and edit note subjects to perform corresponding operation
   constructor(private formBuilder: FormBuilder, private noteService: NoteService) {
-    this.editableNote = false; 
+    this.editableNote = false;
     this.currentDate = new Date();
     this.formErrors =  {'title': '', 'desc': ''};
     this.validationMessages = {
-      "title": { 
-        required: "Note Title is required",
+      'title': {
+        required: 'Note Title is required',
       },
-      "desc": { 
-        required: "Description is required"
+      'desc': {
+        required: 'Description is required'
       }
-    }; 
-
+    };
     if (localStorage.getItem('notes') !== null) {
-      let notes = JSON.parse(localStorage.getItem('notes'));
-      this.generateIdfunc = this.generateId('note', notes.length+1);
+      const notes = JSON.parse(localStorage.getItem('notes'));
+      let newId = notes.length;
+      if (notes.length > 0) {
+        newId = Number(notes[notes.length - 1].id.substring(4, notes[notes.length - 1].id.length));
+      }
+      this.generateIdfunc = this.generateId('note', newId + 1);
     } else {
       this.generateIdfunc = this.generateId('note', 1);
     }
-     
     this.addNoteSubscription = this.noteService.addNewNote.subscribe(add => {
       this.editableNote = add;
       this.dataFound = null;
@@ -75,9 +77,7 @@ export class NoteComponent implements OnInit, OnDestroy {
 
     this.formSubscription = this.noteForm.valueChanges
     .subscribe(data => this.onValueChanged(data));
- 
     this.onValueChanged();
-
   }
 
   // on form value changes bind error messages to form controls to display in template
@@ -86,19 +86,20 @@ export class NoteComponent implements OnInit, OnDestroy {
 
     const form = this.noteForm;
 
-    for (const field in this.formErrors)
-    {
-      this.formErrors[field] = '';
-      const control = form.get(field);
-      if (control && control.dirty && !control.valid)
-      {
-        let label1 = '';
-        let validationMessage: any = {};
-        label1 = this.validationMessages[field];
-           validationMessage = label1;
-        for (const key in control.errors)
-        {
-          this.formErrors[field] += validationMessage[key] + ' ';
+    for (const field in this.formErrors) {
+      if (this.formErrors.hasOwnProperty(field)) {
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          let label1 = '';
+          let validationMessage: any = {};
+          label1 = this.validationMessages[field];
+            validationMessage = label1;
+          for (const key in control.errors) {
+            if (control.errors.hasOwnProperty(key)) {
+              this.formErrors[field] += validationMessage[key] + ' ';
+            }
+          }
         }
       }
     }
@@ -106,10 +107,10 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   // generate specific ids for new notes
   generateId(prefix, start) {
-    var i = start || 0;
+    let i = start || 0;
     return function() {
         return prefix + i++;
-    }
+    };
   }
 
   // add new note as well as update existing note if form is valid
@@ -119,9 +120,11 @@ export class NoteComponent implements OnInit, OnDestroy {
     if (!this.dataFound) {
       formData.id = this.generateIdfunc();
       this.noteService.addNote(formData);
+      this.noteService.showSuccessMessage('Note added successfully');
     } else {
       this.noteService.updateNote(formData);
-    } 
+      this.noteService.showSuccessMessage('Note updated successfully');
+    }
     this.editableNote = false;
     this.dataFound = null;
   }

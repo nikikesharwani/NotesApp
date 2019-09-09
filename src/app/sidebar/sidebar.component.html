@@ -20,7 +20,7 @@
               </div>
               <div (click)="onNoteSelect(i, note)">
                   <p class="card-text" [innerHTML]="note.desc | highlighter: searchText"></p>
-                  <a href="Javascript: void(0)" class="card-link">{{note.timeStamp }}</a>
+                  <a href="Javascript: void(0)" class="card-link">{{ note.timeStamp | timeAgo }}</a>
               </div>      
             </div>
           </div>

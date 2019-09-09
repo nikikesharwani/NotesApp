@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Note } from '../models/note';
 import { Subscription } from 'rxjs/Subscription';
 import { NoteService } from '../services/note.service';
@@ -10,7 +10,7 @@ declare var $: any;
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   selectedIndex: number;
   toggleSearch: boolean;
@@ -23,39 +23,63 @@ export class SidebarComponent implements OnInit, OnDestroy {
   searchText: string;
 
   // initailizing variables and subscribing to search text entered in header to filter and highlight notes
-  constructor(private noteService: NoteService) { 
-    this.toggleSearch = false;
-    this.notes = this.noteService.notes;
-    this.firstLoad = true;
-    this.searchText = '';
+  constructor(private noteService: NoteService) {
+      this.toggleSearch = false;
+      this.notes = this.noteService.notes;
+      this.firstLoad = true;
+      this.searchText = '';
 
-    this.searchSubscription = this.noteService.searchText.subscribe(search => {
-      this.searchText = search;
-    });
+      this.searchSubscription = this.noteService.searchText.subscribe(search => {
+        this.searchText = search;
+      });
   }
 
-  /* initializing sidebar collapse and expand event on window resize and on clicking collapse icon, 
-    and subscribing to notes list from note service
-  */
+  // subscribing to notes list from note service
   ngOnInit() {
+    this.noteSubscription = this.notes
+    .subscribe(
+        notes => {
+          this.notesList = notes;
+          if (this.notesList.length > 0) {
+            this.onNoteSelect(0, this.notesList[0]);
+            if (this.firstLoad) {
+              const notesArray: Note[] = [];
+              this.notesList.forEach((note: Note) => {
+                if (note.checked) {
+                  notesArray.push(note);
+                }
+              });
+              this.firstLoad = false;
+              this.noteService.noteList.next(notesArray);
+            }
+          } else {
+            this.selectedNote = null;
+          }
+        },
+        error => {
+          this.noteService.showErrorMessage(error);
+        }
+      );
+    }
+
+  // initializing sidebar collapse and expand event on window resize and on clicking collapse icon
+  ngAfterViewInit() {
     // Hide submenus
-    $('#body-row .collapse').collapse('hide'); 
-
+    $('#body-row .collapse').collapse('hide');
     // Collapse/Expand icon
-    $('#collapse-icon').addClass('fa-angle-double-left'); 
-
+    $('#collapse-icon').addClass('fa-angle-double-left');
     // Collapse click
     $('[data-toggle=sidebar-colapse]').click(function() {
         SidebarCollapse();
     });
 
     function SidebarCollapse () {
-        $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');      
+        $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
     }
 
     $(window).resize(function() {
-      var bodyWidth = $(this).width();
+      const bodyWidth = $(this).width();
       if (bodyWidth < 768) {
         $('#sidebar-container').removeClass('sidebar-expanded');
         $('#sidebar-container').addClass('sidebar-collapsed');
@@ -64,29 +88,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         $('#sidebar-container').removeClass('sidebar-collapsed');
       }
     });
-
-    this.noteSubscription = this.notes
-    .subscribe(
-        notes => {
-          this.notesList = notes;
-          if (this.notesList.length > 0){
-            this.onNoteSelect(0, this.notesList[0]);
-            if (this.firstLoad) {
-              let notes: Note[] = [];
-              this.notesList.forEach((note: Note) => {
-                if(note.checked){
-                  notes.push(note);
-                }    
-              });
-              this.firstLoad = false;
-              this.noteService.noteList.next(notes);
-            }          
-          }
-        },
-        error => {
-          //Do something
-        }        
-    );  
   }
 
   // On Selecting note emit event so that header will get it
@@ -98,7 +99,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   // On selecting or unselecting checbox acknowledge header to delete selected notes if clicked on delete icon
   onNoteChecked(note: Note) {
-    if(!note.checked){
+    if (!note.checked) {
       note.checked = true;
     } else {
       note.checked = false;
@@ -117,9 +118,4 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.noteSubscription.unsubscribe();
     this.searchSubscription.unsubscribe();
   }
-
-
-
-  
-
 }

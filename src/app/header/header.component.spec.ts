@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
+import { FormsModule } from '@angular/forms';
+import { NoteService } from '../services/note.service';
+import { StoreModule } from '@ngrx/store';
+import { notesReducer } from '../reducers/note.reducer';
+import { ToastModule } from 'ng2-toastr';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +13,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ HeaderComponent ],
+      imports: [
+        FormsModule,
+        StoreModule.provideStore({
+          notes: notesReducer
+        }),
+        ToastModule.forRoot()
+      ],
+      providers: [NoteService]
     })
     .compileComponents();
   }));

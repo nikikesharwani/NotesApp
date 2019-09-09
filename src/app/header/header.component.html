@@ -24,7 +24,7 @@
             <a class="nav-link" [ngClass]="{'disabled': notes.length === 0}" title="Delete Note(s)" href="JavaScript:void(0);" (click)="deleteNote()"><i class="fa fa-trash"></i></a>
           </li>
           <li class="nav-item" *ngIf="!toggleSearch && searchText">
-            <a class="nav-link" title="Clear Search" (click)="searchText = ''; triggerSerach()" href="JavaScript:void(0);"><i class="fa fa-times"></i></a>
+            <a class="nav-link" title="Clear Search" (click)="searchText = ''; triggerSearch()" href="JavaScript:void(0);"><i class="fa fa-times"></i></a>
           </li>
           <li class="nav-item" *ngIf="!toggleSearch">
             <a class="nav-link" title="Search Note(s)" (click)="toggleSearch = true" href="JavaScript:void(0);"><i class="fa fa-search"></i></a>
@@ -32,7 +32,7 @@
           <li>
             <form class="" role="search" *ngIf="toggleSearch">
               <div class="input-group">
-                <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" (ngModelChange)="triggerSerach()" placeholder="Search">
+                <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" (ngModelChange)="triggerSearch()" placeholder="Search">
                 <div class="input-group-append">
                   <button type="reset" class="btn btn-light btn-times" (click)="toggleSearch = false">
                     <i class="fa fa-times"></i>

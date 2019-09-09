@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
 import { NoteService } from '../services/note.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Note } from '../models/note';
@@ -17,8 +17,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchText: string;
 
   // initalizing variables and subscribing to noteList and selectedNote to perform delete and edit operation
-  constructor(private noteService: NoteService) { 
+  constructor(private noteService: NoteService) {
     this.searchText = '';
+    this.notes = [];
     this.noteListSubscription = this.noteService.noteList.subscribe(notes => {
       this.notes = notes;
     });
@@ -40,9 +41,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // sending data to deleteNote Subject so that sidebar component will subscribe it to delete selected notes and update App store
   deleteNote() {
     this.noteService.deleteNote(this.notes);
+    this.noteService.showSuccessMessage('Note(s) deleted successfully');
   }
 
-  // sending data to editNote Subject so that note component will subscribe it to update selected note and update App store 
+  // sending data to editNote Subject so that note component will subscribe it to update selected note and update App store
   editNote() {
     if (this.selectedNote) {
       this.noteService.editNote.next(true);
@@ -50,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   // sending search data to searchText Subject so that sidebar component will subscribe it to filter and highlight notes
-  triggerSerach() {
+  triggerSearch() {
     this.noteService.searchText.next(this.searchText);
   }
 
