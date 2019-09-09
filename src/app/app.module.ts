@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { notesReducer } from './reducers/note.reducer';
 import { NoteService } from './services/note.service';
 import { HighlighterPipe } from './pipes/highlighter.pipe';
 import { FilterdataPipe } from './pipes/filterdata.pipe';
+import { CustomOptions } from './custom-option';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { FilterdataPipe } from './pipes/filterdata.pipe';
     }),
     ToastModule.forRoot()
   ],
-  providers: [NoteService],
+  providers: [NoteService, ToastOptions, { provide: ToastOptions, useClass: CustomOptions }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

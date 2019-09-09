@@ -31,6 +31,16 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.searchSubscription = this.noteService.searchText.subscribe(search => {
         this.searchText = search;
+        if (this.selectedNote && !this.searchText) {
+          this.selectedIndex = this.notesList.findIndex(item => item.id === this.selectedNote.id);
+        } else if (this.searchText) {
+          const filterData = this.filterNoteList();
+          this.selectedNote = filterData[0];
+          this.selectedIndex = 0;
+        } else if (!this.selectedNote && !this.searchText) {
+          this.selectedIndex = 0;
+          this.selectedNote = this.notesList[0];
+        }
       });
   }
 
@@ -78,16 +88,27 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
     }
 
+    // expand and collapse sidebar on window resize
+    const angularComp = this;
     $(window).resize(function() {
       const bodyWidth = $(this).width();
-      if (bodyWidth < 768) {
-        $('#sidebar-container').removeClass('sidebar-expanded');
-        $('#sidebar-container').addClass('sidebar-collapsed');
-      } else {
-        $('#sidebar-container').addClass('sidebar-expanded');
-        $('#sidebar-container').removeClass('sidebar-collapsed');
-      }
+      angularComp.expandCollapseSidebar(bodyWidth);
     });
+
+    const windowWidth = $(window).width();
+    this.expandCollapseSidebar(windowWidth);
+
+  }
+
+  // expand and collapse sidebar based on window width
+  expandCollapseSidebar(width: number) {
+    if (width < 768) {
+      $('#sidebar-container').removeClass('sidebar-expanded');
+      $('#sidebar-container').addClass('sidebar-collapsed');
+    } else {
+      $('#sidebar-container').addClass('sidebar-expanded');
+      $('#sidebar-container').removeClass('sidebar-collapsed');
+    }
   }
 
   // On Selecting note emit event so that header will get it
@@ -111,6 +132,13 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
   // render only new items to list using *ngFor
   trackByFn(index, item) {
     return index;
+  }
+
+  // filter notelist to change selectedNote and selectedIndex property on search
+  filterNoteList() {
+    return this.notesList.filter( item => {
+      return item.title.toLowerCase().includes(this.searchText) || item.desc.toLowerCase().includes(this.searchText);
+    });
   }
 
   // unsubcribing to events, subjects or observables on component destroy

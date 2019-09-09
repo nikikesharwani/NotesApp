@@ -15,10 +15,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   notes: Note[];
   selectedNote: Note;
   searchText: string;
+  toggleSearch: boolean;
 
   // initalizing variables and subscribing to noteList and selectedNote to perform delete and edit operation
   constructor(private noteService: NoteService) {
     this.searchText = '';
+    this.toggleSearch = false;
     this.notes = [];
     this.noteListSubscription = this.noteService.noteList.subscribe(notes => {
       this.notes = notes;

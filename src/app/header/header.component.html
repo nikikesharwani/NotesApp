@@ -21,16 +21,16 @@
             <a class="nav-link" title="Edit Selected Note" href="JavaScript:void(0);" (click)="editNote()"><i class="fas fa-edit"></i></a>
           </li>
           <li class="nav-item" *ngIf="!toggleSearch">
-            <a class="nav-link" [ngClass]="{'disabled': notes.length === 0}" title="Delete Note(s)" href="JavaScript:void(0);" (click)="deleteNote()"><i class="fa fa-trash"></i></a>
+            <a class="nav-link" [ngClass]="{'disabled': notes.length === 0 ? true : false}" title="Delete Note(s)" href="JavaScript:void(0);" (click)="deleteNote()"><i class="fa fa-trash"></i></a>
           </li>
-          <li class="nav-item" *ngIf="!toggleSearch && searchText">
+          <li class="nav-item" *ngIf="!toggleSearch && searchText ? true : false">
             <a class="nav-link" title="Clear Search" (click)="searchText = ''; triggerSearch()" href="JavaScript:void(0);"><i class="fa fa-times"></i></a>
           </li>
           <li class="nav-item" *ngIf="!toggleSearch">
             <a class="nav-link" title="Search Note(s)" (click)="toggleSearch = true" href="JavaScript:void(0);"><i class="fa fa-search"></i></a>
           </li>
           <li>
-            <form class="" role="search" *ngIf="toggleSearch">
+            <form role="search" *ngIf="toggleSearch">
               <div class="input-group">
                 <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" (ngModelChange)="triggerSearch()" placeholder="Search">
                 <div class="input-group-append">

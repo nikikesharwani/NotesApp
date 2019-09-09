@@ -22,6 +22,17 @@ body {
     padding: 10px 10px !important;
  }
 
+ .container-fluid {
+     z-index: 999 !important;
+ }
+
+ #toast-container {
+     z-index: 9999 !important;
+ }
+
+ .toast-top-right {
+     top: 60px !important;
+ }
 
  .header {
     height: 100px;
@@ -145,6 +156,10 @@ body {
     cursor: default;
 }
 
+.disabled .fa {
+    color: #f4cb75 !important;
+}
+
 .card-link {
     pointer-events: none !important;
     cursor: default !important;
@@ -193,7 +208,7 @@ body {
         margin-left: 8px;
     }
 
-    .h5, h5 {
+    .h5, h5, .h4, h4 {
         font-size: 1rem !important;
     }
 
@@ -208,6 +223,11 @@ body {
     #showNote {
         font-size: 14px;
     }
-    
+
+    #toast-container>div {
+        padding: 10px 15px 10px 45px !important;
+        width: 15em !important;
+    }
+
 }
  

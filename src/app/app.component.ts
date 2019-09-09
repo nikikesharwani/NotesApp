@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef, OnDestroy } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { NoteService } from './services/note.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -19,11 +19,11 @@ export class AppComponent implements OnDestroy {
       this.toastr.setRootViewContainerRef(_vcr);
 
     this.successMessageSubscription = this.noteService.successToastr.subscribe(message => {
-      this.toastr.success(message);
+      this.toastr.success(message, 'Success!');
     });
 
     this.errorMessageSubscription = this.noteService.errorToastr.subscribe(message => {
-      this.toastr.error(message);
+      this.toastr.error(message, 'Oops!');
     });
 
   }
