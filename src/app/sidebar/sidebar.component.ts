@@ -88,10 +88,10 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     function SidebarCollapse () {
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-        if ($('#sidebar-container').hasClass('sidebar-expanded')){
-          $("#emptyNotes p").css('display', 'block');
+        if ($('#sidebar-container').hasClass('sidebar-expanded')) {
+          $('#emptyNotes p').css('display', 'block');
         } else {
-          $("#emptyNotes p").css('display', 'none');
+          $('#emptyNotes p').css('display', 'none');
         }
     }
 
@@ -110,16 +110,16 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
   // expand and collapse sidebar based on window width
   expandCollapseSidebar(width: number) {
     if (width < 768) {
-      if(this.sizeChanged) {
+      if (this.sizeChanged) {
         $('#sidebar-container').removeClass('sidebar-expanded');
         $('#sidebar-container').addClass('sidebar-collapsed');
-        $("#emptyNotes p").css('display', 'none');
+        $('#emptyNotes p').css('display', 'none');
         this.sizeChanged = false;
-      } 
+      }
     } else {
       $('#sidebar-container').addClass('sidebar-expanded');
       $('#sidebar-container').removeClass('sidebar-collapsed');
-      $("#emptyNotes p").css('display', 'block');
+      $('#emptyNotes p').css('display', 'block');
       this.sizeChanged = true;
     }
   }

@@ -53,7 +53,7 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.dataFound = null;
       if (add) {
         this.noteForm.reset();
-      } 
+      }
     });
 
     this.editNoteSubscription = this.noteService.editNote.subscribe(edit => {
