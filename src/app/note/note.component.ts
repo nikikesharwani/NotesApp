@@ -51,7 +51,9 @@ export class NoteComponent implements OnInit, OnDestroy {
     this.addNoteSubscription = this.noteService.addNewNote.subscribe(add => {
       this.editableNote = add;
       this.dataFound = null;
-      this.noteForm.reset();
+      if (add) {
+        this.noteForm.reset();
+      } 
     });
 
     this.editNoteSubscription = this.noteService.editNote.subscribe(edit => {

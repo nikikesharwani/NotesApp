@@ -38,6 +38,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // sending data to addNewNote Subject so that note component will subscribe it to add new note and update App store
   addNote() {
     this.noteService.addNewNote.next(true);
+    if (this.toggleSearch) {
+      this.noteService.addNewNote.next(false);
+    }
   }
 
   // sending data to deleteNote Subject so that sidebar component will subscribe it to delete selected notes and update App store
