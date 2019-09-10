@@ -21,6 +21,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
   noteSubscription: Subscription;
   searchSubscription: Subscription;
   searchText: string;
+  sizeChanged: boolean;
 
   // initailizing variables and subscribing to search text entered in header to filter and highlight notes
   constructor(private noteService: NoteService) {
@@ -28,6 +29,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
       this.notes = this.noteService.notes;
       this.firstLoad = true;
       this.searchText = '';
+      this.sizeChanged = true;
 
       this.searchSubscription = this.noteService.searchText.subscribe(search => {
         this.searchText = search;
@@ -108,13 +110,17 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
   // expand and collapse sidebar based on window width
   expandCollapseSidebar(width: number) {
     if (width < 768) {
-      $('#sidebar-container').removeClass('sidebar-expanded');
-      $('#sidebar-container').addClass('sidebar-collapsed');
-      $("#emptyNotes p").css('display', 'none');
+      if(this.sizeChanged) {
+        $('#sidebar-container').removeClass('sidebar-expanded');
+        $('#sidebar-container').addClass('sidebar-collapsed');
+        $("#emptyNotes p").css('display', 'none');
+        this.sizeChanged = false;
+      } 
     } else {
       $('#sidebar-container').addClass('sidebar-expanded');
       $('#sidebar-container').removeClass('sidebar-collapsed');
       $("#emptyNotes p").css('display', 'block');
+      this.sizeChanged = true;
     }
   }
 
